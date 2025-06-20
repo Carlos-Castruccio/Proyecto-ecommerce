@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>MotoAccesorios</title>
+  <link rel="icon" href="images/moto-icon.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/main.js" defer></script>
+</head>
+<body>
+  <header>
+
+    <nav>
+      <div class="nav-izquierda">
+        <h1>MotoStore</h1>
+        <h3>División Accesorios</h3>
+      </div>
+      <ul class="nav-centro">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="page/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <h2 class="fondo-Image"> - "Andá equipado como se debe. Estilo y protección para cada rodada."</h2>
+
+    <section class="catalogo-carrito">
+      <section id="catalogo">
+        <h2 class="hero">Nuestros Productos</h2>
+        <div id="productos-container" class="productos-container">
+          <noscript>Activa JavaScript para ver los productos.</noscript>
+        </div>
+      </section>
+      
+      <section id="carrito-section">
+        <h2>Carrito de Compras</h2>
+        <ul id="carrito-items" class="carrito-items"></ul>
+        <p>Total: $<span id="carrito-total">0</span></p>
+        <p>Productos en carrito: <span id="carrito-cantidad">0</span></p>
+        <button id="vaciar-carrito">Vaciar Carrito</button>
+        <button id="comprar">Comprar</button>
+      </section>
+    </section>
+  </main>
+
+  <div id="modal-compra" class="modal">
+    <div class="modal-contenido">
+      <span class="cerrar-modal" id="cerrar-modal">&times;</span>
+      <h2>¡Gracias por tu compra!</h2>
+      <p>Te enviaremos un email con la confirmación de tu pedido.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 MotoAccesorios</p>
+  </footer>
+
+  </body>
+</html>

@@ -14,18 +14,18 @@ body {
 }
 
 header {
-  height: 150px;
+  height: auto;
 }
 
 nav{
-  height: 150px;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 nav .navbar-brand {
-  font-size: 30px;           
+  font-size: 40px;           
   color: #ffcc00 !important;   
-  font-weight: bold;           
-  text-transform: uppercase;   
+  font-weight: bold;              
   letter-spacing: 4px;         
 }
 
@@ -36,11 +36,16 @@ nav .navbar-brand {
 }
 
 .navbar-brand .subtitulo {
-  font-size: 12px;
+  font-size: 14px;
   color: #ccc;
   font-weight: normal;
   letter-spacing: 2px;
 }
+.navbar-collapse {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
 
 .fondo-Image{  
     text-align: center;

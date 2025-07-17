@@ -46,6 +46,22 @@ nav .navbar-brand {
   overflow-y: auto;
 }
 
+.logged-in {
+  display: none;
+}
+
+.user-name {
+  display: inline-block;
+  color: #0dcaf0; /* o text-info en Bootstrap */
+  font-weight: bold;
+}
+.correo-usuario {
+  font-size: 12px !important; /* o 10px, ajustalo a gusto */
+  color: #0dcaf0; /* celeste Bootstrap */
+  font-style: italic;
+  opacity: 0.8;
+}
+
 
 .fondo-Image{  
     text-align: center;

@@ -68,5 +68,4 @@ onAuthStateChanged(auth, async (user) => {
 //    }else {
 //        
 //    }
-//console.log(user);
 })

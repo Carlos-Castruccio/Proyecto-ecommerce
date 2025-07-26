@@ -1,0 +1,12 @@
+# Claves privadas
+.env
+node_admin_tools/serviceAccountKey.json
+public/js/firebase.js
+
+# Archivos del sistema
+.DS_Store
+
+# Node
+node_admin_tools/node_modules/
+
+

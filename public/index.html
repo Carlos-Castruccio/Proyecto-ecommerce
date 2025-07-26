@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Toasify-js-->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <!--Bootstrap-->
+  <link href=	"https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"  rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <title>MotoAccesorios</title>
+
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          MotoStore
+        <span class="subtitulo">División Accesorios</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse bg-dark" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item ">
+              <a class="nav-link fs-5" href="./page/contacto.html">Contacto</a>
+            </li>
+            <li class="nav-item logged-in admin-only d-none">
+            <a class="nav-link fs-5 " href="./page/adminPedidos.html">Admin-Pedidos</a>
+            </li>
+            <li class="nav-item admin-only d-none">
+            <a class="nav-link  fs-5" href="./page/adminAgregarProducto.html">Admin-Producto</a>
+            </li>
+            <li class="nav-item logged-out">
+              <a class="nav-link fs-5" href="#" data-bs-toggle="modal" data-bs-target="#signinModal">Ingresar</a>
+            </li>
+            <li class="nav-item logged-out fs-5">
+              <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Registrarse</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link logged-in fs-5" href="#" id="logout">Cerrar Sesión</a>
+            </li>
+            <li class="nav-item logged-in">
+              <a id="user-name" class="nav-link correo-usuario text-info disabled"></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Signin Modal -->
+    <div class="modal fade" id="signinModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Signin</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="login-form">
+              <label for="email">Email</label>
+              <input type="email" id="login-email" class="form-control mb-3" placeholder="Email" autocomplete="off">
+              <label for="password">Contraseña</label>
+              <input type="password" id="login-password" class="form-control mb-3" placeholder="ingrese contraseña"
+                autocomplete="off" required>
+              <button type="submit" class="btn btn-primary">
+                Ingresar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Signup</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="signup-form">
+              <label for="email">Email</label>
+              <input type="email" id="signup-email" class="form-control mb-3" placeholder="Email" autocomplete="off"
+                required>
+              <label for="password">Contraseña</label>
+              <input type="password" id="signup-password" class="form-control mb-3" placeholder="ingrese contraseña"
+                autocomplete="off" required>
+              <button type="submit" class="btn btn-primary">
+                Rgistrarse
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <h2 class="fondo-Image">"Andá equipado como se debe. Estilo y protección para cada rodada."</h2>
+
+    <section class="catalogo-carrito">
+      <section id="catalogo">
+        <h2 class="hero">Nuestros Productos</h2>
+        <div id="productos-container" class="productos-container">
+          <noscript>Activa JavaScript para ver los productos.</noscript>
+        </div>
+      </section>
+      
+      <section id="carrito-section">
+        <h2>Carrito de Compras</h2>
+        <ul id="carrito-items" class="carrito-items"></ul>
+        <p>Total: $<span id="carrito-total">0</span></p>
+        <p>Productos en carrito: <span id="carrito-cantidad">0</span></p>
+        <button id="vaciar-carrito">Vaciar Carrito</button>
+        <button id="comprar">Comprar</button>
+      </section>
+    </section>
+  </main>
+
+  <div id="modal-compra" class="modal-compras">
+    <div class="modal-contenido">
+      <span class="cerrar-modal" id="cerrar-modal">&times;</span>
+      <h2>¡Gracias por tu compra!</h2>
+      <p>Te enviaremos un email con la confirmación de tu pedido.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 MotoAccesorios</p>
+  </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>  
+<script type="module" src="./main.js"></script>  
+
+
+</body>
+
+</html>

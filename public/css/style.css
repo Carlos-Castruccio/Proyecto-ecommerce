@@ -1,0 +1,351 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+  padding: 0;
+}
+
+header {
+  height: auto;
+}
+
+nav{
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+nav .navbar-brand {
+  font-size: 40px;           
+  color: #ffcc00 !important;   
+  font-weight: bold;              
+  letter-spacing: 4px;         
+}
+
+.navbar-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.navbar-brand .subtitulo {
+  font-size: 14px;
+  color: #ccc;
+  font-weight: normal;
+  letter-spacing: 2px;
+}
+.navbar-collapse {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.logged-in {
+  display: none;
+}
+
+.user-name {
+  display: inline-block;
+  color: #0dcaf0; /* o text-info en Bootstrap */
+  font-weight: bold;
+}
+.correo-usuario {
+  font-size: 12px !important; /* o 10px, ajustalo a gusto */
+  color: #0dcaf0; /* celeste Bootstrap */
+  font-style: italic;
+  opacity: 0.8;
+}
+
+
+.fondo-Image{  
+    text-align: center;
+    height: 670px;
+    background: url(../image/moto-16.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-style: italic;
+    color: yellow;
+    }
+
+.catalogo-carrito{
+  background-color: skyblue;
+  padding: 2rem;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  color: #444;}
+  .hero:hover {
+  background: linear-gradient(to right, red, blue);
+  background-clip: text;
+  font-size: 50px;
+  color: transparent;
+  transition-duration: 3s;
+}
+
+
+
+/* Productos */
+.productos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.producto-card {
+  background: #fff;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.producto-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+.producto-card img:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.producto-card h2 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.producto-card .precio {
+  font-weight: bold;
+  margin: 0.5rem 0;
+  color: #27ae60;
+}
+
+.btn-agregar {
+  padding: 0.5rem 1rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-agregar:hover {
+  background-color: #2980b9;
+}
+
+/* Carrito */
+#carrito-section {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#carrito-items {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+#carrito-items li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.4rem;
+  border-bottom: 1px solid #eee;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+#carrito-items li span {
+  flex: 2;
+  min-width: 180px;
+}
+
+#carrito-items li div {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+#carrito-items button {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+
+.btn-mas {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.btn-menos {
+  background-color: #e67e22;
+  color: #fff;
+}
+
+.btn-eliminar {
+  background-color: #c0392b;
+  color: #fff;
+}
+
+#vaciar-carrito, #comprar {
+  margin-top: 1rem;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+#vaciar-carrito:hover {
+  background-color: #c0392b;
+}
+
+#comprar {
+  background-color: #2ecc71;
+}
+
+#comprar:hover {
+  background-color: #27ae60;
+}
+
+footer {
+  background-color: #222;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+/* Modal */
+.modal-compras {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-contenido {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 2rem;
+  border: 1px solid #888;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.cerrar-modal {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* contacto.css */
+
+.titulo-contacto {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 2.5rem;
+  color: #191b1d;
+}
+
+.form-contacto {
+  background: #fff;
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-contacto div {
+  margin-bottom: 1.2rem;
+}
+
+.form-contacto label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.4rem;
+  color: #333;
+}
+
+.form-contacto input,
+.form-contacto textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-contacto textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-contacto button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.form-contacto button:hover {
+  background-color: #2980b9;
+}
+.fondo-gradiente {
+  background: linear-gradient(80deg, skyblue, rgb(74, 74, 148));
+  background-size: 300% 200%;
+  animation: 6s gradient infinite;     
+  min-width: 100vw;         
+  min-height: 100vh;    
+  margin: 0;
+  padding: 2rem 0;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}

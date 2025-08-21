@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js"
+import { setDoc, doc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js"
 
-import { auth } from './firebase.js'
+import { auth, db } from './firebase.js'
 
 import { mostrarMensaje} from './mostrarMensaje.js'
 
@@ -17,6 +18,12 @@ signupForm.addEventListener('submit', async (e) => {
     try{    
         const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
         console.log(userCredentials)
+        
+        // Crear documento de rol para el nuevo usuario
+        await setDoc(doc(db, "roles", userCredentials.user.uid), {
+            admin: false
+        });
+        
         //cerrar el modal de registro
         const signupModal=document.querySelector('#signupModal')
         const modal=bootstrap.Modal.getInstance(signupModal)

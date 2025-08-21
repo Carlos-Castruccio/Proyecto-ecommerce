@@ -46,10 +46,6 @@ nav .navbar-brand {
   overflow-y: auto;
 }
 
-.logged-in {
-  display: none;
-}
-
 .user-name {
   display: inline-block;
   color: #0dcaf0; /* o text-info en Bootstrap */
@@ -338,6 +334,221 @@ footer {
   padding: 2rem 0;
 }
 
+/* --- Admin Pedidos: bordes visibles en tabla oscura --- */
+.table.table-dark {
+  border-collapse: separate;   /* bordes nítidos */
+  border-spacing: 0;
+}
+
+.table.table-dark thead th,
+.table.table-dark tbody td {
+  border: 1px solid rgba(255, 255, 255, .35);
+}
+
+.table.table-dark thead th {
+  border-bottom-width: 2px;    /* header un poco más marcado */
+}
+
+/* ================== ADMIN – Tablas y Formularios ================== */
+
+/* Normalización base de tablas */
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table th, .table td { vertical-align: middle; }
+
+/* Tema oscuro bien contrastado (por si algo lo pisa) */
+.table.table-dark {
+  --bs-table-bg: #212529;
+  --bs-table-color: #fff;
+  background-color: var(--bs-table-bg) !important;
+  color: var(--bs-table-color) !important;
+}
+
+/* Bordes visibles en header y cuerpo */
+.table.table-dark thead th,
+.table.table-dark tbody td {
+  border: 1px solid rgba(255, 255, 255, .35);
+}
+.table.table-dark thead th {
+  background-color: #1a1f24;      /* header un poco más oscuro */
+  border-bottom-width: 2px;       /* separador de encabezado marcado */
+}
+
+/* Miniaturas (admin de productos y pedidos) sin inline */
+#tabla-admin-productos img,
+#tabla-admin-pedidos img,
+.table-dark tbody img.admin-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+/* Preview de imagen en formularios (agregar/editar) */
+#prod-preview,
+.img-preview {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.2);
+}
+
+/* Inputs del modal/form de productos con look consistente en dark */
+#form-producto .form-control,
+#form-producto .form-select {
+  background-color: rgba(255,255,255,.06);
+  color: inherit;
+  border-color: rgba(255,255,255,.25);
+}
+#form-producto .form-control::placeholder { color: rgba(255,255,255,.55); }
+
+/* Botones de acciones en filas (que no “bailen”) */
+#tabla-admin-productos td:last-child,
+#tabla-admin-pedidos td:last-child {
+  white-space: nowrap;
+}
+
+/* (Opcional) ancho sugerido de algunas columnas si tu tabla coincide */
+.table thead th:first-child,
+.table tbody td:first-child { width: 70px; }    /* columna de imagen */
+
+/* ====== Admin: Agregar Producto (sin tocar el HTML) ====== */
+
+/* Título y contenedor */
+body.bg-dark-subtle nav.navbar {
+  border-bottom: 1px solid rgba(0,0,0,.15);
+}
+body.bg-dark-subtle main.container h2 {
+  color: #111;
+  letter-spacing: .3px;
+}
+
+/* Caja del formulario */
+#form-agregar-producto {
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+/* Etiquetas e inputs */
+#form-agregar-producto .form-label {
+  font-weight: 600;
+  color: #2b2b2b;
+}
+#form-agregar-producto .form-control {
+  border-color: rgba(0,0,0,.15);
+}
+#form-agregar-producto .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 .2rem rgba(13,110,253,.15);
+}
+
+/* Input de archivo más claro y consistente */
+#form-agregar-producto input[type="file"] {
+  cursor: pointer;
+}
+#form-agregar-producto input[type="file"]::file-selector-button {
+  margin-right: .75rem;
+  padding: .35rem .75rem;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: .375rem;
+  background-color: #f8f9fa;
+  color: #333;
+  cursor: pointer;
+}
+#form-agregar-producto input[type="file"]::file-selector-button:hover {
+  background-color: #eef1f4;
+}
+
+/* Botón de enviar centrado */
+#form-agregar-producto .btn.btn-primary {
+  padding-inline: 2rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(13,110,253,.25);
+}
+
+/* Mensaje de éxito */
+#mensaje-exito {
+  border: 1px solid rgba(25,135,84,.35);
+  background-color: rgba(25,135,84,.08);
+  color: #155d39;
+  border-radius: 10px;
+}
+/* ===================== Tablas (oscuro) ===================== */
+.table.table-dark {
+  border-collapse: separate;
+  border-spacing: 0;
+  --bs-table-bg: #212529;
+  --bs-table-color: #fff;
+  background-color: var(--bs-table-bg) !important;
+  color: var(--bs-table-color) !important;
+}
+.table.table-dark thead th,
+.table.table-dark tbody td {
+  border: 1px solid rgba(255,255,255,.35);
+}
+.table.table-dark thead th {
+  background-color: #1a1f24;   /* encabezado un poco más oscuro */
+  border-bottom-width: 2px;
+}
+
+/* Miniaturas reutilizables (admin y listados) */
+.admin-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+/* =========== Página: Productos Disponibles =========== */
+/* Aplica a la tabla que tiene <tbody id="tbody-listado-productos"> */
+#tbody-listado-productos td:nth-child(1) { width: 70px;  }   /* Img */
+#tbody-listado-productos td:nth-child(4) { width: 120px; text-align: right; } /* Precio */
+#tbody-listado-productos td:nth-child(5) { width: 100px; text-align: right; } /* Stock */
+
+/* Asegura que la miniatura del listado use la misma clase */
+#tbody-listado-productos img { composes: admin-thumb; } /* si tu build no soporta composes, duplica reglas */
+#tbody-listado-productos img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+/* Ajustes de texto para nombres largos */
+#tbody-listado-productos td:nth-child(2) { word-break: break-word; }
+
+/* =========== Opcional: botones de acción en tablas admin =========== */
+#tabla-admin-productos td:last-child,
+#tabla-admin-pedidos td:last-child { white-space: nowrap; }
+
+/* Acciones (columna) en tablas de Productos Disponibles */
+.productos-accordion .col-acciones {
+  width: 120px;
+  white-space: nowrap;
+}
+
+/* Botón eliminar consistente en modo oscuro */
+.btn-outline-danger {
+  border-color: rgba(220,53,69,.6);
+}
+
+/*Mis pedidos*/
+
+.admin-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.15);
+}
+
 @keyframes gradient {
   0% {
     background-position: 0 50%;
@@ -349,3 +560,9 @@ footer {
     background-position: 0 50%;
   }
 }
+.oculto {
+  display: none;
+}
+
+body[data-role="admin"] .solo-no-admin { display: none !important; }
+

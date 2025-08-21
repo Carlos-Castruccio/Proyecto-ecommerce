@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Productos Disponibles</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="bg-dark text-light">
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark border-bottom">
+    <div class="container">
+      <a class="navbar-brand" href="../../index.html">MotoStore <span class="subtitulo">División Accesorios</span></a>
+      <a class="btn btn-outline-light" href="../../index.html">← Volver</a>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <h2 class="text-center mb-3 text-warning">Productos Disponibles</h2>
+
+    <div class="row g-2 align-items-center mb-3">
+      <div class="col-md-6">
+        <input id="buscador" type="search" class="form-control" placeholder="Buscar por nombre...">
+      </div>
+      <div class="col-md-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="solo-stock">
+          <label class="form-check-label" for="solo-stock">Mostrar solo con stock</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categorías como accordion -->
+    <div id="accordion-categorias" class="accordion productos-accordion"></div>
+  </main>
+
+  <!-- Modal Editar (admin-only) -->
+  <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar producto</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="form-editar" class="row g-3">
+            <input type="hidden" id="edit-id">
+            <div class="col-md-6">
+              <label class="form-label" for="edit-nombre">Nombre</label>
+              <input class="form-control" id="edit-nombre" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="edit-categoria">Categoría</label>
+              <select id="edit-categoria" class="form-select">
+                <option value="Auto">Auto (detectar)</option>
+                <option>Camperas</option>
+                <option>Cascos</option>
+                <option>Antiparras</option>
+                <option>Guantes</option>
+                <option>Botas</option>
+                <option>Otros</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="edit-descripcion">Descripción</label>
+              <textarea class="form-control" id="edit-descripcion" rows="2"></textarea>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="edit-precio">Precio</label>
+              <input type="number" class="form-control" id="edit-precio" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="edit-stock">Stock</label>
+              <input type="number" class="form-control" id="edit-stock" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="edit-imagen-url">URL Imagen</label>
+              <input type="url" class="form-control" id="edit-imagen-url" placeholder="https://...">
+            </div>
+
+            <div class="col-12">
+              <div class="d-flex align-items-center gap-3">
+                <img id="edit-preview" src="" alt="preview" class="img-preview rounded border">
+                <div class="flex-grow-1">
+                  <label class="form-label" for="edit-imagen-file">Cambiar imagen (Cloudinary)</label>
+                  <input type="file" id="edit-imagen-file" class="form-control" accept="image/*">
+                  <div class="form-text">Si subís un archivo, se actualizará la URL automáticamente.</div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div id="editar-alerta" class="alert alert-danger d-none mt-2"></div>
+          <div id="editar-exito" class="alert alert-success d-none mt-2">Cambios guardados.</div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-guardar-edicion" class="btn btn-primary">Guardar cambios</button>
+          <button class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="../js/productosDisponibles.js"></script>
+</body>
+</html>
+

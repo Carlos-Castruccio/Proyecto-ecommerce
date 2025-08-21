@@ -1,12 +1,21 @@
-# Claves privadas
-.env
-node_admin_tools/serviceAccountKey.json
-public/js/firebase.js
+# Ignora node_modules (Node.js)
+node_modules/
 
-# Archivos del sistema
+# Ignora archivo de clave privada de Firebase Admin SDK
+serviceAccountKey.json
+
+# Ignora archivos del entorno de Node.js
+package.json
+package-lock.json
+setAdminRole.js
+
+# Ignora VSCode (opcional si usás este editor)
+.vscode/
+
+# Ignora carpetas de sistema (Windows/Mac)
 .DS_Store
+Thumbs.db
 
-# Node
-node_admin_tools/node_modules/
-
-
+# Ignora carpetas de producción temporales (si se usan)
+dist/
+build/

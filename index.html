@@ -26,14 +26,24 @@
         <div class="collapse navbar-collapse bg-dark" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item ">
-              <a class="nav-link fs-5" href="./public/page/contacto.html">Contacto</a>
+              <a class="nav-link fs-5" href="public/page/contacto.html">Contacto</a>
             </li>
             <li class="nav-item logged-in admin-only d-none">
-            <a class="nav-link fs-5 " href="./public/page/adminPedidos.html">Admin-Pedidos</a>
+              <a class="nav-link fs-5" href="public/page/adminPedidos.html">Admin-Pedidos</a>
             </li>
-            <li class="nav-item admin-only d-none">
-            <a class="nav-link  fs-5" href=".public/page/adminAgregarProducto.html">Admin-Producto</a>
+            <li class="nav-item logged-in admin-only d-none">
+              <a class="nav-link fs-5" href="public/page/productosDisponibles.html">Productos Disponibles</a>
             </li>
+            <li class="nav-item logged-in admin-only">Admin-Pedidos</a>
+            </li>
+            <li class="nav-item logged-in admin-only d-none">
+              <a class="nav-link fs-5" href="public/page/adminAgregarProducto.html">Admin-Producto</a>
+            </li>
+            <li class="nav-item logged-in">
+              <a class="nav-link fs-5 solo-no-admin" href="public/page/misPedidos.html">Mis Pedidos</a>
+
+            </li>
+
             <li class="nav-item logged-out">
               <a class="nav-link fs-5" href="#" data-bs-toggle="modal" data-bs-target="#signinModal">Ingresar</a>
             </li>
@@ -83,7 +93,7 @@
           </div>
           <div class="modal-body">
             <form id="signup-form">
-              <label for="email">Email</label>
+              <label for="signup-email">Email</label>
               <input type="email" id="signup-email" class="form-control mb-3" placeholder="Email" autocomplete="off"
                 required>
               <label for="password">Contraseña</label>
@@ -98,17 +108,14 @@
       </div>
     </div>
   </header>
-
+  
   <main>
+        <h2 class="fondo-Image">"Andá equipado como se debe. Estilo y protección para cada rodada."</h2>
 
-    <h2 class="fondo-Image">"Andá equipado como se debe. Estilo y protección para cada rodada."</h2>
-
-    <section class="catalogo-carrito">
+    <div id="contenedor-productos" class="d-flex flex-wrap justify-content-center"></div>
+        <section class="catalogo-carrito">
       <section id="catalogo">
         <h2 class="hero">Nuestros Productos</h2>
-        <div id="productos-container" class="productos-container">
-          <noscript>Activa JavaScript para ver los productos.</noscript>
-        </div>
       </section>
       
       <section id="carrito-section">

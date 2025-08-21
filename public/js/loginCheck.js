@@ -1,31 +1,53 @@
-import { auth } from './firebase.js';
-import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
+// public/js/loginCheck.js
+import { db } from './firebase.js';
+import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
 
-const loggedOutLinks = document.querySelectorAll('.logged-out');
-const loggedInLinks = document.querySelectorAll('.logged-in');
-const adminLinks = document.querySelectorAll('.admin-only');
+export async function loginCheck(user) {
+  // Mantengo nombres simples y predecibles (como pediste)
+  const loggedInLinks  = document.querySelectorAll('.logged-in');
+  const loggedOutLinks = document.querySelectorAll('.logged-out');
+  const adminOnly      = document.querySelectorAll('.admin-only');
+  const userName       = document.getElementById('user-name');
 
-export const loginCheck = async (user) => {
-  if (user) {
-    const token = await user.getIdTokenResult();
-
-    loggedOutLinks.forEach(link => link.style.display = 'none');
-    loggedInLinks.forEach(link => link.style.display = 'block');
-
-    if (token.claims.admin) {
-      adminLinks.forEach(link => link.classList.remove('d-none'));
-    } else {
-      adminLinks.forEach(link => link.classList.add('d-none'));
-    }
-
-    const userNameDisplay = document.querySelector('#user-name');
-    if (userNameDisplay) {
-      userNameDisplay.textContent = `Sesión activa: ${user.email}`;
-    }
-
-  } else {
-    loggedInLinks.forEach(link => link.style.display = 'none');
-    loggedOutLinks.forEach(link => link.style.display = 'block');
-    adminLinks.forEach(link => link.classList.add('d-none'));
+  if (!user) {
+    // Usuario NO logueado
+    loggedInLinks.forEach(el => el.classList.add('d-none'));
+    loggedOutLinks.forEach(el => el.classList.remove('d-none'));
+    adminOnly.forEach(el => el.classList.add('d-none'));
+    if (userName) userName.textContent = '';
+    document.body.dataset.role = '';
+    return;
   }
-};
+
+  // Usuario logueado (base)
+  loggedInLinks.forEach(el => el.classList.remove('d-none'));
+  loggedOutLinks.forEach(el => el.classList.add('d-none'));
+  if (userName) userName.textContent = user.email || '';
+
+  // Por defecto oculto admin hasta verificar rol
+  adminOnly.forEach(el => el.classList.add('d-none'));
+
+  try {
+    // --- Logs de diagnóstico mínimos (te ayudan a ver el problema en consola) ---
+    console.log('[loginCheck] uid:', user?.uid, 'email:', user?.email);
+
+    const rolRef  = doc(db, 'roles', user.uid);
+    const rolSnap = await getDoc(rolRef);
+
+    console.log('[loginCheck] roles exists?', rolSnap.exists(), 
+                'data:', rolSnap.exists() ? rolSnap.data() : null);
+
+    const data = rolSnap.exists() ? rolSnap.data() : {};
+    const isAdmin = data.admin === true; // booleano estricto
+
+    console.log('[loginCheck] isAdmin:', isAdmin);
+    // ---------------------------------------------------------------------------
+
+    adminOnly.forEach(el => el.classList.toggle('d-none', !isAdmin));
+    document.body.dataset.role = isAdmin ? 'admin' : 'user';
+  } catch (err) {
+    console.error('loginCheck(): no se pudo obtener el rol', err);
+    adminOnly.forEach(el => el.classList.add('d-none'));
+    document.body.dataset.role = 'user';
+  }
+}

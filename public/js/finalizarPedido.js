@@ -1,82 +1,91 @@
-import { auth } from './firebase.js';
-import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
+// public/js/finalizarPedido.js
+import { db, auth } from "./firebase.js";
 import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
+  addDoc, collection, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-const db = getFirestore();
+// DOM (coincide con tu finalizar.html)
+const form = document.getElementById("form-finalizar");
+const nombreEl = document.getElementById("nombre");
+const apellidoEl = document.getElementById("apellido");
+const emailEl = document.getElementById("email");
+const direccionEl = document.getElementById("direccion");
+const telefonoEl = document.getElementById("telefono");
+const pagoEl = document.getElementById("pago");
+const okBox = document.getElementById("mensaje-confirmacion");
 
-const form = document.getElementById('form-finalizar');
-const emailInput = document.getElementById('email');
-const confirmacion = document.getElementById('mensaje-confirmacion');
-
-// Mostrar correo del usuario activo
-onAuthStateChanged(auth, user => {
-  if (user) {
-    emailInput.value = user.email;
-  } else {
+// Completar email del usuario logueado
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
     alert("Debés iniciar sesión para finalizar la compra.");
-    window.location.href = '../index.html';
-  }
-});
-
-// Obtener carrito desde localStorage
-const obtenerCarrito = () => {
-  const carrito = localStorage.getItem('carrito');
-  return carrito ? JSON.parse(carrito) : [];
-};
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const nombre = document.getElementById('nombre').value;
-  const apellido = document.getElementById('apellido').value;
-  const direccion = document.getElementById('direccion').value;
-  const telefono = document.getElementById('telefono').value;
-  const pago = document.getElementById('pago').value;
-  const productos = obtenerCarrito();
-
-  if (productos.length === 0) {
-    alert("El carrito está vacío. No se puede registrar el pedido.");
+    window.location.href = "../../index.html";
     return;
   }
+  emailEl.value = user.email || "";
+});
+
+function leerCarrito() {
+  try {
+    const arr = JSON.parse(localStorage.getItem("carrito") || "[]");
+    if (!Array.isArray(arr)) return [];
+    return arr.map(p => ({
+      id: String(p.id),
+      nombre: String(p.nombre || ""),
+      precio: Number(p.precio) || 0,
+      cantidad: Number(p.cantidad) || 1,
+      categoria: p.categoria || null,
+      subtotal: (Number(p.precio) || 0) * (Number(p.cantidad) || 1),
+    }));
+  } catch {
+    return [];
+  }
+}
+
+form?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const btn = form.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.textContent = "Guardando..."; }
 
   try {
-    const nuevoPedido = {
-      uid: auth.currentUser.uid,
-      email: auth.currentUser.email,
-      nombre,
-      apellido,
-      direccion,
-      telefono,
-      metodoPago: pago,
-      productos: productos.map(p => ({
-        id: p.id,
-        nombre: p.nombre,
-        cantidad: p.cantidad,
-        precio: p.precio,
-        imagen: p.imagen,
-        stock: p.stock
-      })),
-      estado: "En preparación",
-      fechaCompra: serverTimestamp()
+    const user = auth.currentUser;
+    if (!user) throw new Error("NO_AUTH");
+
+    // Validaciones simples
+    if (!nombreEl.value.trim() || !apellidoEl.value.trim()) throw new Error("FALTAN_DATOS");
+    if (!direccionEl.value.trim() || !telefonoEl.value.trim()) throw new Error("FALTAN_DATOS");
+    if (!pagoEl.value) throw new Error("SIN_PAGO");
+
+    const items = leerCarrito();
+    if (!items.length) throw new Error("CARRITO_VACIO");
+
+    const total = items.reduce((s, i) => s + i.subtotal, 0);
+
+    const pedido = {
+      uid: user.uid,
+      email: user.email || "",
+      nombre: nombreEl.value.trim(),
+      apellido: apellidoEl.value.trim(),
+      direccion: direccionEl.value.trim(),
+      telefono: telefonoEl.value.trim(),
+      pago: pagoEl.value,
+      items,
+      total,
+      estado: "pendiente",
+      creadoEn: serverTimestamp(),
     };
 
-    await addDoc(collection(db, "pedidos"), nuevoPedido);
+    await addDoc(collection(db, "pedidos"), pedido);
 
-    confirmacion.classList.remove('d-none');
-    form.reset();
-    localStorage.removeItem('carrito');
-
-    setTimeout(() => {
-      window.location.href = "../page/pedidos.html";
-    }, 2000);
-
-  } catch (error) {
-    console.error("❌ Error al guardar el pedido:", error);
-    alert("Error al guardar el pedido. Intentalo nuevamente.");
+    // éxito
+    localStorage.removeItem("carrito");
+    okBox?.classList.remove("d-none");
+    setTimeout(() => (window.location.href = "./misPedidos.html"), 1200);
+  } catch (err) {
+    console.error("[finalizarPedido] Error al guardar:", err);
+    alert("Hubo un error al procesar tu pedido. Intentalo nuevamente.");
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "Confirmar Pedido"; }
   }
 });

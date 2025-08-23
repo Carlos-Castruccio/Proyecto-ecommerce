@@ -19,32 +19,3 @@ Thumbs.db
 # Ignora carpetas de producción temporales (si se usan)
 dist/
 build/
-
-# 🔒 PROTECCIÓN DE CLAVES API Y SECRETOS
-# Archivos de variables de entorno
-.env
-.env.local
-.env.development
-.env.production
-.env.test
-
-# Archivos de configuración con claves
-config.js
-firebase-config.js
-api-keys.js
-secrets.js
-
-# Archivos de Firebase con claves
-firebase-keys.json
-google-services.json
-GoogleService-Info.plist
-
-# Archivos de configuración de servicios
-service-account.json
-credentials.json
-key.json
-
-# Archivos de logs y temporales
-*.log
-*.tmp
-*.temp

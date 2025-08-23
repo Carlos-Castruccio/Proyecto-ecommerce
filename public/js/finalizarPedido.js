@@ -1,28 +1,30 @@
 // public/js/finalizarPedido.js
 import { db, auth } from "./firebase.js";
-import {
-  addDoc, collection, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+import { addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-// DOM (coincide con tu finalizar.html)
-const form = document.getElementById("form-finalizar");
-const nombreEl = document.getElementById("nombre");
-const apellidoEl = document.getElementById("apellido");
-const emailEl = document.getElementById("email");
-const direccionEl = document.getElementById("direccion");
-const telefonoEl = document.getElementById("telefono");
-const pagoEl = document.getElementById("pago");
-const okBox = document.getElementById("mensaje-confirmacion");
+// Helpers de selección robusta
+const $ = (sel) => document.querySelector(sel);
+const pick = (...sels) => sels.map($).find(Boolean);
+const val = (el) => (el?.value ?? "").trim();
 
-// Completar email del usuario logueado
+const form       = $("#form-finalizar");
+const nombreEl   = pick("#nombre","[name='nombre']","#Nombre","#firstName");
+const apellidoEl = pick("#apellido","[name='apellido']","#Apellido","#lastName");
+const emailEl    = pick("#email","[name='email']","#correo","#correoElectronico");
+const direccionEl= pick("#direccion","[name='direccion']","#address");
+const telefonoEl = pick("#telefono","[name='telefono']","#phone");
+const pagoEl     = pick("#pago","[name='pago']","#metodoPago");
+const okBox      = $("#mensaje-confirmacion");
+
+// Autocompletar email del usuario logueado
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     alert("Debés iniciar sesión para finalizar la compra.");
-    window.location.href = "../../index.html";
+    location.href = "../../index.html";
     return;
   }
-  emailEl.value = user.email || "";
+  if (emailEl && !val(emailEl)) emailEl.value = user.email || "";
 });
 
 function leerCarrito() {
@@ -35,55 +37,58 @@ function leerCarrito() {
       precio: Number(p.precio) || 0,
       cantidad: Number(p.cantidad) || 1,
       categoria: p.categoria || null,
-      subtotal: (Number(p.precio) || 0) * (Number(p.cantidad) || 1),
+      subtotal: (Number(p.precio)||0) * (Number(p.cantidad)||1),
     }));
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
 form?.addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  const btn = form.querySelector('button[type="submit"]');
+  const btn = form.querySelector("button[type='submit']");
   if (btn) { btn.disabled = true; btn.textContent = "Guardando..."; }
 
   try {
     const user = auth.currentUser;
     if (!user) throw new Error("NO_AUTH");
 
-    // Validaciones simples
-    if (!nombreEl.value.trim() || !apellidoEl.value.trim()) throw new Error("FALTAN_DATOS");
-    if (!direccionEl.value.trim() || !telefonoEl.value.trim()) throw new Error("FALTAN_DATOS");
-    if (!pagoEl.value) throw new Error("SIN_PAGO");
+    // Datos cliente (con fallbacks sanos)
+    let nombre   = val(nombreEl);
+    let apellido = val(apellidoEl);
+    const dn = (user.displayName || "").trim();
+    if (!nombre && dn) nombre = dn.split(" ")[0] || "";
+    if (!apellido && dn) apellido = dn.split(" ").slice(1).join(" ").trim();
+    if (!nombre) nombre = (user.email || "").split("@")[0];
+
+    // Validaciones mínimas exigidas por tu flujo
+    if (!val(direccionEl) || !val(telefonoEl) || !val(pagoEl)) throw new Error("FALTAN_DATOS");
 
     const items = leerCarrito();
     if (!items.length) throw new Error("CARRITO_VACIO");
 
-    const total = items.reduce((s, i) => s + i.subtotal, 0);
+    const total = items.reduce((s,i)=>s + i.subtotal, 0);
 
+    // === Claves compatibles con tus REGLAS ===
     const pedido = {
       uid: user.uid,
-      email: user.email || "",
-      nombre: nombreEl.value.trim(),
-      apellido: apellidoEl.value.trim(),
-      direccion: direccionEl.value.trim(),
-      telefono: telefonoEl.value.trim(),
-      pago: pagoEl.value,
-      items,
-      total,
+      nombre,
+      apellido,
+      email: val(emailEl) || user.email || "",
+      direccion: val(direccionEl),
+      telefono: val(telefonoEl),
+      pago: val(pagoEl),
       estado: "pendiente",
-      creadoEn: serverTimestamp(),
+      items,                 // usamos "items" (tu regla acepta items[] o productos[])
+      total,                 // permitido en create
+      creadoEn: serverTimestamp(), // permitido en create
     };
 
     await addDoc(collection(db, "pedidos"), pedido);
 
-    // éxito
     localStorage.removeItem("carrito");
     okBox?.classList.remove("d-none");
-    setTimeout(() => (window.location.href = "./misPedidos.html"), 1200);
+    setTimeout(()=> location.href = "./misPedidos.html", 1200);
   } catch (err) {
-    console.error("[finalizarPedido] Error al guardar:", err);
+    console.error("[finalizarPedido] Error:", err);
     alert("Hubo un error al procesar tu pedido. Intentalo nuevamente.");
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = "Confirmar Pedido"; }

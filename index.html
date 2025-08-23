@@ -13,17 +13,17 @@
 </head>
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-      <div class="container">
-        <a class="navbar-brand" href="#">
-          MotoStore
-        <span class="subtitulo">División Accesorios</span>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark custom-navbar">
+      <div class="container-fluid px-4">
+        <a class="navbar-brand custom-brand" href="#">
+          <span class="brand-main">MotoStore</span>
+          <span class="brand-subtitle">División Accesorios</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse bg-dark" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item ">
               <a class="nav-link fs-5" href="public/page/contacto.html">Contacto</a>
@@ -38,6 +38,9 @@
             </li>
             <li class="nav-item logged-in admin-only d-none">
               <a class="nav-link fs-5" href="public/page/adminAgregarProducto.html">Admin-Producto</a>
+            </li>
+            <li class="nav-item logged-in admin-only d-none">
+              <a class="nav-link fs-5" href="public/page/historialVentas.html">Historial Ventas</a>
             </li>
             <li class="nav-item logged-in">
               <a class="nav-link fs-5 solo-no-admin" href="public/page/misPedidos.html">Mis Pedidos</a>
@@ -110,9 +113,24 @@
   </header>
   
   <main>
-        <h2 class="fondo-Image">"Andá equipado como se debe. Estilo y protección para cada rodada."</h2>
+    <h2 class="fondo-Image">"Andá equipado como se debe. Estilo y protección para cada rodada."</h2>
 
-    <div id="contenedor-productos" class="d-flex flex-wrap justify-content-center"></div>
+    <!-- Sección de Productos con Título y Mejor Espaciado -->
+    <section class="productos-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="productos-titulo">🚀 Accesorios Premium para tu Moto</h2>
+            <p class="productos-subtitulo">Equipamiento profesional para cada aventura</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div id="contenedor-productos" class="productos-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
         <section class="catalogo-carrito">
       <section id="catalogo">
         <h2 class="hero">Nuestros Productos</h2>
@@ -144,6 +162,32 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>  
 <script type="module" src="./public/main.js"></script>  
 
+<script>
+// Efecto de scroll en el navbar
+window.addEventListener('scroll', function() {
+  const navbar = document.querySelector('.custom-navbar');
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
+// Efecto de hover en los enlaces del nav
+document.addEventListener('DOMContentLoaded', function() {
+  const navLinks = document.querySelectorAll('.custom-navbar .nav-link');
+  
+  navLinks.forEach(link => {
+    link.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-2px) scale(1.05)';
+    });
+    
+    link.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0) scale(1)';
+    });
+  });
+});
+</script>
 
 </body>
 

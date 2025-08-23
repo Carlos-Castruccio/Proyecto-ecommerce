@@ -19,3 +19,8 @@ Thumbs.db
 # Ignora carpetas de producción temporales (si se usan)
 dist/
 build/
+
+# 🔒 PROTECCIÓN MÍNIMA DE CLAVES
+# Solo archivos críticos con claves API
+.env
+firebase-config.js

@@ -89,6 +89,14 @@ body.bg-dark {
   border-color: #17a2b8 !important;
 }
 
+/* ===== ESTILOS PARA EL CARRITO ===== */
+.carrito-titulo {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
 /* ===== ESTILOS PARA BOTONES DE NAVEGACIÓN ===== */
 .nav-link-volver-inicio {
   color: #17a2b8 !important;

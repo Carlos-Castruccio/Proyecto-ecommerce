@@ -7,33 +7,22 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
 </head>
-<body>
+<body class="bg-dark-subtle">
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="../../index.html">
-        MotoStore <span class="subtitulo">División Accesorios</span>
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark custom-navbar">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand custom-brand" href="../../index.html">
+        <span class="brand-main">MotoStore</span>
+        <span class="brand-subtitle">División Accesorios</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse bg-dark" id="navbarNav">
+      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link fs-5" href="../page/contacto.html">Contacto</a>
-          </li>
-          <li class="nav-item logged-out">
-            <a class="nav-link fs-5" href="#" data-bs-toggle="modal" data-bs-target="#signinModal">Ingresar</a>
-          </li>
-          <li class="nav-item logged-out">
-            <a class="nav-link fs-5" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Registrarse</a>
-          </li>
-          <li class="nav-item logged-in">
-            <a class="nav-link fs-5" href="#" id="logout">Cerrar Sesión</a>
-          </li>
-          <li class="nav-item logged-in">
-            <a id="user-name" class="nav-link text-info small disabled"></a>
+            <a class="nav-link fs-5" href="../../index.html">← Volver al Inicio</a>
           </li>
         </ul>
       </div>
@@ -42,7 +31,7 @@
 
   <!-- CONTENIDO PEDIDOS -->
   <div class="container py-5">
-    <h2 class="text-center mb-4">Mis Pedidos</h2>
+    <h2 class="text-center mb-4 text-dark">Mis Pedidos</h2>
     <div class="mb-3">
       <strong>Correo del cliente:</strong> <span id="user-email" class="text-primary"></span>
     </div>

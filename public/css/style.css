@@ -29,6 +29,96 @@ nav{
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
 }
 
+/* ===== ESTILOS DEL HISTORIAL DE VENTAS ===== */
+.admin-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+
+.table-responsive {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.estado-badge {
+  font-size: 0.8em;
+}
+
+.btn-mover-historial {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  border: none;
+  color: white;
+}
+
+.btn-mover-historial:hover {
+  background: linear-gradient(45deg, #ee5a24, #d63031);
+  color: white;
+}
+
+/* Estilos para modo oscuro */
+body.bg-dark {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%) !important;
+  min-height: 100vh;
+}
+
+.card.bg-dark {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+  border: 1px solid #444;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.table-dark {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+}
+
+.table-dark tbody tr:hover {
+  background: rgba(255, 204, 0, 0.1) !important;
+}
+
+.text-warning {
+  color: #ffcc00 !important;
+  text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+.border-warning {
+  border-color: #ffcc00 !important;
+}
+
+.border-info {
+  border-color: #17a2b8 !important;
+}
+
+/* ===== ESTILOS PARA BOTONES DE NAVEGACIÓN ===== */
+.nav-link-volver-inicio {
+  color: #17a2b8 !important;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(23, 162, 184, 0.3);
+}
+
+.nav-link-volver-inicio:hover {
+  color: #138496 !important;
+  background-color: rgba(23, 162, 184, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-volver-inicio {
+  background: transparent;
+  border: 2px solid #17a2b8;
+  color: #17a2b8;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(23, 162, 184, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-volver-inicio:hover {
+  background: rgba(23, 162, 184, 0.1);
+  border-color: #138496;
+  color: #138496;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+}
+
 .custom-navbar .container-fluid {
   padding-left: 2rem !important;
   padding-right: 2rem !important;
@@ -445,6 +535,9 @@ nav{
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .producto-card img {
@@ -476,10 +569,17 @@ nav{
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  display: block;
+  margin: 1rem auto 0 auto;
+  min-width: 140px;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .btn-agregar:hover {
   background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 /* Carrito */

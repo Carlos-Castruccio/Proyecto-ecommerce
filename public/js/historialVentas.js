@@ -101,6 +101,28 @@ function puedeReclamar(pedido) {
 /* -------------------- Mover Pedidos al Historial -------------------- */
 async function moverPedidosAlHistorial() {
   try {
+    // Verificar que el usuario esté autenticado
+    const user = auth.currentUser;
+    if (!user) {
+      alert("❌ No estás autenticado. Por favor, inicia sesión.");
+      return;
+    }
+
+    // Verificar permisos de administrador
+    const esUsuarioAdmin = await esAdmin(user.uid);
+    if (!esUsuarioAdmin) {
+      alert("❌ No tienes permisos de administrador para realizar esta acción.");
+      return;
+    }
+
+    // Mostrar indicador de carga
+    if (btnMoverAlHistorial) {
+      btnMoverAlHistorial.disabled = true;
+      btnMoverAlHistorial.innerHTML = '⏳ Procesando...';
+    }
+
+    console.log("Verificando pedidos para mover al historial...");
+
     // Obtener pedidos entregados hace más de 30 días
     const ahora = new Date();
     const limite30Dias = new Date(ahora.getTime() - (30 * 24 * 60 * 60 * 1000));
@@ -108,8 +130,7 @@ async function moverPedidosAlHistorial() {
     const pedidosRef = collection(db, "pedidos");
     const q = query(
       pedidosRef,
-      where("estado", "==", "completado"),
-      orderBy("fechaEntrega", "desc")
+      where("estado", "==", "completado")
     );
     
     const snap = await getDocs(q);
@@ -124,31 +145,65 @@ async function moverPedidosAlHistorial() {
       }
     });
     
+    console.log(`Encontrados ${pedidosAMover.length} pedidos para mover al historial`);
+    
     if (pedidosAMover.length === 0) {
-      alert("No hay pedidos para mover al historial.");
+      alert("No hay pedidos para mover al historial. Los pedidos se mueven automáticamente después de 30 días de entrega.");
+      return;
+    }
+    
+    // Confirmar la acción
+    const confirmacion = confirm(`¿Estás seguro de que quieres mover ${pedidosAMover.length} pedidos al historial? Esta acción no se puede deshacer.`);
+    if (!confirmacion) {
       return;
     }
     
     // Mover cada pedido al historial
+    let movidosExitosos = 0;
+    let errores = 0;
+    
     for (const pedido of pedidosAMover) {
-      // Agregar al historial
-      await addDoc(collection(db, "historialVentas"), {
-        ...pedido,
-        movidoAlHistorialEn: serverTimestamp(),
-        estadoFinal: "finalizado_sin_reclamo",
-        motivo: "Período de reclamo vencido (30 días)"
-      });
-      
-      // Eliminar de pedidos activos
-      await deleteDoc(doc(db, "pedidos", pedido.id));
+      try {
+        console.log(`Moviendo pedido ${pedido.id} al historial...`);
+        
+        // Agregar al historial
+        await addDoc(collection(db, "historialVentas"), {
+          ...pedido,
+          movidoAlHistorialEn: serverTimestamp(),
+          estadoFinal: "finalizado_sin_reclamo",
+          motivo: "Período de reclamo vencido (30 días)"
+        });
+        
+        // Eliminar de pedidos activos
+        await deleteDoc(doc(db, "pedidos", pedido.id));
+        movidosExitosos++;
+        
+        console.log(`✅ Pedido ${pedido.id} movido exitosamente`);
+      } catch (error) {
+        console.error(`❌ Error al mover pedido ${pedido.id}:`, error);
+        errores++;
+      }
     }
     
-    alert(`Se movieron ${pedidosAMover.length} pedidos al historial.`);
-    cargarHistorial();
+    // Mostrar resultado
+    if (errores === 0) {
+      alert(`✅ Se movieron exitosamente ${movidosExitosos} pedidos al historial.`);
+    } else {
+      alert(`⚠️ Se movieron ${movidosExitosos} pedidos al historial, pero hubo ${errores} errores. Revisa la consola para más detalles.`);
+    }
+    
+    // Recargar el historial
+    await cargarHistorial();
     
   } catch (error) {
     console.error("Error al mover pedidos:", error);
-    alert("Error al mover pedidos al historial.");
+    alert(`❌ Error al mover pedidos al historial: ${error.message}`);
+  } finally {
+    // Restaurar el botón
+    if (btnMoverAlHistorial) {
+      btnMoverAlHistorial.disabled = false;
+      btnMoverAlHistorial.innerHTML = '🔄 Mover Pedidos al Historial';
+    }
   }
 }
 
@@ -291,9 +346,43 @@ document.addEventListener("click", async (e) => {
   }
 });
 
+/* -------------------- Event Listeners -------------------- */
+document.addEventListener("click", async (e) => {
+  // Copiar IDs
+  const code = e.target.closest(".orden-id, .producto-id");
+  if (code) {
+    const id = code.getAttribute("data-id");
+    if (id) {
+      try {
+        await navigator.clipboard.writeText(id);
+        // Mostrar feedback
+        code.style.backgroundColor = "#28a745";
+        setTimeout(() => code.style.backgroundColor = "", 1000);
+      } catch {}
+    }
+    return;
+  }
+  
+  // Ver detalle del pedido
+  const btnDetalle = e.target.closest(".btn-ver-detalle");
+  if (btnDetalle) {
+    const id = btnDetalle.getAttribute("data-id");
+    // Aquí podrías abrir un modal con más detalles
+    alert(`Detalles del pedido ${id} - Funcionalidad en desarrollo`);
+  }
+});
+
 // Botón para mover pedidos automáticamente
 if (btnMoverAlHistorial) {
-  btnMoverAlHistorial.addEventListener("click", moverPedidosAlHistorial);
+  btnMoverAlHistorial.addEventListener("click", async () => {
+    try {
+      console.log("Iniciando proceso de mover pedidos al historial...");
+      await moverPedidosAlHistorial();
+    } catch (error) {
+      console.error("Error en el event listener del botón:", error);
+      alert(`Error inesperado: ${error.message}`);
+    }
+  });
 }
 
 // Botón para limpiar historial (opcional, solo para admins)
@@ -340,6 +429,7 @@ onAuthStateChanged(auth, async (user) => {
   }
   
   cargarHistorial();
+  
 });
 
 // Exportar funciones para uso en otros archivos

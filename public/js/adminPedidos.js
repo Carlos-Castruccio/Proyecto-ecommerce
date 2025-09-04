@@ -1,7 +1,7 @@
 // public/js/adminPedidos.js
 import { db, auth } from "./firebase.js";
 import {
-  collection, getDocs, doc, getDoc, updateDoc, serverTimestamp
+  collection, getDocs, doc, getDoc, updateDoc, deleteDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
@@ -299,6 +299,28 @@ document.addEventListener("change", async (e) => {
   } catch (err) {
     console.error("No se pudo actualizar fecha de entrega:", err);
     alert("No se pudo actualizar la fecha de entrega.");
+  }
+});
+
+// Event listener para eliminar pedido
+document.addEventListener("click", async (e) => {
+  const deleteBtn = e.target.closest(".btn-cancelar");
+  if (!deleteBtn) return;
+  
+  const id = deleteBtn.getAttribute("data-id");
+  if (!id) return;
+  
+  // Confirmar antes de eliminar
+  const confirmar = confirm("¿Estás seguro de que quieres eliminar este pedido? Esta acción no se puede deshacer.");
+  if (!confirmar) return;
+  
+  try {
+    await deleteDoc(doc(db, "pedidos", id));
+    // Recargar la tabla después de eliminar
+    cargarAdmin();
+  } catch (err) {
+    console.error("No se pudo eliminar el pedido:", err);
+    alert("No se pudo eliminar el pedido. Error: " + err.message);
   }
 });
 
